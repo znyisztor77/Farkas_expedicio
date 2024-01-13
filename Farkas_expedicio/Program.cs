@@ -39,15 +39,20 @@ namespace Farkas_expedicio
             farkasKeres(expedicio);
 
             Console.WriteLine("4. feladat: ");
-
-            
-            /*for(int i = 0; i < expedicio.Count; i++)
-            {
-                Console.WriteLine($"{expedicio[i].Nap}, {expedicio[i].Amator}");
-                 
-            }*/
             statisztika(expedicio);
+
+            Console.WriteLine("5. feladat");
+            uzenetDekodolas(expedicio);
+
             Console.ReadKey();
+        }
+
+        private static void uzenetDekodolas(List<Expedicio> expedicio)
+        {
+            for (int i = 0; i < expedicio.Count; i++)
+            {
+
+            }
         }
 
         private static void statisztika(List<Expedicio> expedicio)
@@ -88,13 +93,8 @@ namespace Farkas_expedicio
                     Console.WriteLine($"{expedicio[i].Nap}. nap: {expedicio[i].Amator}. rádióamtőr.");
                     Console.Write("Az üzenet amelyik tartalmazza a farkas szót:  ");
                     Console.WriteLine(expedicio[i].Uzenet);
-
                 }
-            }
-            
-
-           
-
+            }                         
         }
 
         private static List<Expedicio> Adatokbeolvas(string fajlnev)
