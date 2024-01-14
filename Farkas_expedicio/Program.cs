@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace Farkas_expedicio
         {
 
             Console.WriteLine("Farkas expediciós feladat:");
-            int db = 0;
+           
             string fajlnev = ("veetel.txt");
 
             Console.WriteLine("1. feladat: ");
@@ -44,28 +45,54 @@ namespace Farkas_expedicio
             Console.WriteLine("5. feladat");
             uzenetDekodolas(expedicio);
 
+            Console.WriteLine("7. feladat.");
+            string szoveg= "";
+            szame(szoveg);
+
             Console.ReadKey();
         }
 
-        private static void uzenetDekodolas(List<Expedicio> expedicio)
+        private static bool szame(string szoveg)
         {
+            bool valasz = true;
+            for(int i = 0; i < szoveg.Length; i++)
+            if (szoveg[i]< '0' || szoveg[i] > 9)
+            {
+                valasz = false;
+            }
+            return valasz;
+        }
+
+        private static void uzenetDekodolas(List<Expedicio> expedicio)
+        {            
+            string keszszoveg = "";
+            
             for (int i = 0; i < expedicio.Count; i++)
             {
-
+                if (expedicio[i].Nap == 1 && expedicio[i].Amator == 13)
+                {               
+                    keszszoveg = keszszoveg + expedicio[i].Uzenet;
+                }
+                
             }
+
+            
+            Console.WriteLine(keszszoveg);
+             
+            
         }
 
         private static void statisztika(List<Expedicio> expedicio)
         {
             int [] amatorDarab = new int[12];
             int db = 0;            
-            int nap = 1;
+            int nap = 0;
 
             while (nap <= 11)
             {
                 for(int i = 0; i<expedicio.Count; i++)
                 {
-                    if (expedicio[i].Nap == nap)
+                    if ((expedicio[i].Nap) == nap)
                     {
                         db++;
             
@@ -76,9 +103,9 @@ namespace Farkas_expedicio
 
                 nap++;
             }
-                       
+                                                                     
             // A feladat kiírása
-            for(int i = 1;i < amatorDarab.Length; i++)
+            for (int i = 0; i < amatorDarab.Length; i++)
              {
                  Console.WriteLine($"{i}. napon {amatorDarab[i]}  rádióamtőr."); 
              }
@@ -91,8 +118,8 @@ namespace Farkas_expedicio
                 if (expedicio[i].Uzenet.Contains("farkas"))
                 {
                     Console.WriteLine($"{expedicio[i].Nap}. nap: {expedicio[i].Amator}. rádióamtőr.");
-                    Console.Write("Az üzenet amelyik tartalmazza a farkas szót:  ");
-                    Console.WriteLine(expedicio[i].Uzenet);
+                    //Console.Write("Az üzenet amelyik tartalmazza a farkas szót:  ");
+                   ///Console.WriteLine(expedicio[i].Uzenet);
                 }
             }                         
         }
@@ -112,30 +139,23 @@ namespace Farkas_expedicio
                 Console.WriteLine("Fájl tartalma beolvasva!");
                 using (StreamReader sr = new StreamReader(fajlnev))
                 {
-                    int darab = 0;                    
+                              
                     while (!sr.EndOfStream)
                     {
                         Expedicio expediciok = new Expedicio();
                                             
                         sor = sr.ReadLine();
-                        sorok = sor.Split(' ');
-                        string temp = sr.ReadLine();
-                        if (darab % 2 == 0)
-                        {
-                            expediciok.Nap = int.Parse(sorok[0]);
-                            expediciok.Amator = int.Parse(sorok[1]);
-                            expediciok.Uzenet = temp;
-                            expedicio.Add(expediciok);
-                        }
-                    
-                    darab++;
-
+                        sorok = sor.Split(' ');                                    
+                        
+                        expediciok.Nap = int.Parse(sorok[0]);
+                        expediciok.Amator = int.Parse(sorok[1]);
+                        expediciok.Uzenet = sr.ReadLine();
+                        expedicio.Add(expediciok);                       
+                                       
                     }
                 }           
-               
             }
-                return expedicio;
-        }
-       
+           return expedicio;
+        }       
     }
 }
